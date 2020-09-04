@@ -38,3 +38,11 @@ class Blockchain:
     def get_last(self):
         """ Get the last block """
         return self.chain[-1]
+
+    def print_chain(self):
+        for block in self.chain:
+            print(block)
+
+    def print_transactions(self):
+        for transaction in self.transactions:
+            print(transaction)
