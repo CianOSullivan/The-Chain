@@ -9,14 +9,14 @@ class Blockchain:
         self.transactions = []
         self.new_block(100, 1)
 
-    def new_block(self, proof, previous_hash=None):
+    def new_block(self, proof, prev_hash=None):
         """ Create a new block """
         current_block = {
             'index': len(self.chain) + 1,       # The index of the current block in the chain
             'timestamp': time(),                # Stored in unix time
             'transactions': self.transactions,  # The entire list of previous transactions
             'proof': proof,
-            'previous_hash': previous_hash or self.hash_block(self.get_last())
+            'prev_hash': prev_hash or self.hash_block(self.get_last())
         }
 
         self.transactions.clear()
@@ -33,7 +33,7 @@ class Blockchain:
 
         return self.get_last()['index'] + 1
 
-    def hash_block(block):
+    def hash_block(self, block):
         """ Make a new hash for the given block """
         block_string = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
@@ -50,12 +50,13 @@ class Blockchain:
         for transaction in self.transactions:
             print(transaction)
 
-    def pow(self, last_proof):
+    def PoW(self, last_proof):
         proof = 0
-        while (self.do_work() is False):
+        while (self.do_work(last_proof, proof) is False):
             proof += 1
         return proof
 
+    @staticmethod
     def do_work(last_proof, proof):
         current_guess = last_proof * proof
         current_run = str(current_guess).encode()
