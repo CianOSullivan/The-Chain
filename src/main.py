@@ -30,22 +30,21 @@ def mine():
     last_block = chain.get_last()
     last_proof = last_block['proof']
     proof = chain.PoW(last_proof)
-    if (proof is not None):
-        chain.new_transaction("0", node_identifier, 1)
-        prev_hash = chain.hash_block(last_block)
-        block = chain.new_block(proof, prev_hash)
-        print(block)
-        response = {
-            'message': "New block created.",
-            'index': block['index'],
-            'transactions': block['transactions'],
-            'proof': block['proof'],
-            'prev_hash': block['prev_hash'],
-        }
-    else:
-        response = {
-            'message': "No blocks to mine",
-        }
+    chain.new_transaction("0", node_identifier, 1)
+    prev_hash = chain.hash_block(last_block)
+    block = chain.new_block(proof, prev_hash)
+
+    response = {
+        'message': "Block " + str(block['index']) + " created.",
+        'index': block['index'],
+        'transactions': block['transactions'],
+        'proof': block['proof'],
+        'prev_hash': block['prev_hash'],
+    }
+    #else:
+    #    response = {
+    #        'message': "No blocks to mine",
+    #    }
     return render_template("mine.html", response=response)
 
 

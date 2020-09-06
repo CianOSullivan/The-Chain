@@ -3,23 +3,28 @@
   <head>
     <meta charset="utf-8">
     <title>Make a transaction</title>
-    <style>
-      label {
-          display: inline-block;
-          text-align: right;
-      }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.css') }}">
   </head>
   <body>
-    <h1> Blockchain </h1>
-    <form method="POST">
-      <label>Sender:</label>
-      <input name="sender"><br>
-      <label>Reciever:</label>
-      <input name="reciever"><br>
-      <label>Amount:</label>
-      <input name="amount"><br>
-      <input type="submit" value="Make transaction">
-    </form>
+    <section class="hero is-dark">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title"> Transaction </h1>
+          <h2 class="subtitle"> Make a transaction. </h2>
+        </div>
+      </div>
+    </section>
+    <div class="container">
+      <form method="POST" class="form">
+        <br>
+        <label class="label">Sender:</label>
+        <input name="sender" class="input" placeholder="Sender name"><br>
+        <label class="label">Reciever:</label>
+        <input name="reciever" class="input" placeholder="Reciever name"><br>
+        <label class="label">Amount:</label>
+        <input name="amount" class="input" placeholder="Amount"><br><br>
+        <input type="submit" value="Make transaction" class="button is-rounded is-link">
+      </form>
+    </div>
   </body>
 </html>

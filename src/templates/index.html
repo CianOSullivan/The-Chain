@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Blockchain</title>
-    <style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.css') }}">    <style>
       label {
           display: inline-block;
           text-align: right;
@@ -11,10 +11,19 @@
     </style>
   </head>
   <body>
-    <h1> Blockchain </h1>
-    <p> You can interact with the blockchain by using the following buttons: </p>
-    <button onclick="location.href='/transaction'" type="button"> Make a transaction </button>
-    <button onclick="location.href='/mine'" type="button"> Mine </button>
-
+    <section class="hero is-dark">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title"> The Chain </h1>
+          <h2 class="subtitle"> Blockchain implementation written in Python using Flask. </h2>
+        </div>
+      </div>
+    </section>
+    <div class="container">
+      <br>
+      <p class="subtitle"> You can interact with the blockchain using the following buttons: </p>
+      <button onclick="location.href='/transaction'" type="button" class="button is-link is-rounded"> Make a transaction </button>
+      <button onclick="location.href='/mine'" type="button" class="button is-link is-rounded"> Mine </button>
+     </div>
   </body>
 </html>
