@@ -13,10 +13,21 @@
           <h2 class="subtitle"> Mine a block. </h2>
         </div>
       </div>
+      <div class="hero-foot">
+          <nav class="tabs">
+              <div class="container">
+                  <ul>
+                      <li href='/index'><a>Home</a></li>
+                      <li><a href='/transaction'>Transaction</a></li>
+                      <li><a href='/mine' class="is-active">Mine</a></li>
+                  </ul>
+              </div>
+          </nav>
+      </div>
     </section>
     <div class="container">
       <br>
-      <p class="subtitle"> Block mined: <pre>{{response}}</pre> </p>
+      <p class="subtitle"> Block mined: <pre>{{response}}</pre> </p> <br>
       <button onclick="location.href='/mine'" type="button" class="button is-rounded is-link"> Mine </button>
     </div>
   </body>

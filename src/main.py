@@ -1,5 +1,5 @@
 from blockchain import Blockchain
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, Markup
 from uuid import uuid4
 
 app = Flask(__name__)
@@ -9,7 +9,7 @@ node_identifier = str(uuid4()).replace('-', '')
 
 
 @app.route('/')
-def hello_world():
+def index_page():
     return render_template("index.html")
 
 
@@ -17,12 +17,17 @@ def hello_world():
 def transaction_page():
     return render_template("transaction.html")
 
-@app.route('/', methods=['POST'])
+
+@app.route('/transaction', methods=['POST'])
 def my_form_post():
     sender = request.form['sender']
     reciever = request.form['reciever']
     amount = request.form['amount']
-    return sender + " " + reciever + " " + amount
+    #if everything is not none then success
+    transaction = Markup('<p class="subtitle has-text-success">Transaction executed: \n' + sender + ' => ' + reciever + ': ' + amount + '</p>')
+    #otherwise send error
+    #transaction =
+    return render_template("transaction.html", transaction=transaction)
 
 
 @app.route('/mine', methods=['GET'])

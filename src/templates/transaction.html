@@ -10,8 +10,19 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title"> Transaction </h1>
-          <h2 class="subtitle"> Make a transaction. </h2>
+          <h2 class="subtitle"> Make a new transaction. </h2>
         </div>
+      </div>
+      <div class="hero-foot">
+          <nav class="tabs">
+              <div class="container">
+                  <ul>
+                      <li href='/index'><a>Home</a></li>
+                      <li><a href='/transaction' class="is-active">Transaction</a></li>
+                      <li><a href='/mine'>Mine</a></li>
+                  </ul>
+              </div>
+          </nav>
       </div>
     </section>
     <div class="container">
@@ -25,6 +36,8 @@
         <input name="amount" class="input" placeholder="Amount"><br><br>
         <input type="submit" value="Make transaction" class="button is-rounded is-link">
       </form>
+      <br>
+      {{transaction}}
     </div>
   </body>
 </html>
