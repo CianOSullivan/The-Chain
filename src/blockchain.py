@@ -19,7 +19,6 @@ class Blockchain:
             'prev_hash': prev_hash or self.hash_block(self.get_last())
         }
 
-        self.transactions.clear()
         self.chain.append(current_block)
         return current_block
 

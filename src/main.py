@@ -19,14 +19,20 @@ def transaction_page():
 
 
 @app.route('/transaction', methods=['POST'])
-def my_form_post():
+def transaction_form():
     sender = request.form['sender']
     reciever = request.form['reciever']
     amount = request.form['amount']
-    #if everything is not none then success
-    transaction = Markup('<p class="subtitle has-text-success">Transaction executed: \n' + sender + ' => ' + reciever + ': ' + amount + '</p>')
-    #otherwise send error
-    #transaction =
+
+    # if all fields are filled
+    if (sender and reciever and amount):
+        transaction = Markup('<p class="subtitle has-text-success">Transaction executed: \n' +
+                             sender + ' => ' + reciever + ': ' + amount + '</p>')
+        chain.new_transaction(sender, reciever, amount)
+    else:
+        transaction = Markup('<p class="subtitle has-text-danger">Transaction Failed: ' +
+                             'Must complete form</p>')
+
     return render_template("transaction.html", transaction=transaction)
 
 
@@ -42,6 +48,7 @@ def mine():
     response = {
         'message': "Block " + str(block['index']) + " created.",
         'index': block['index'],
+        'Number of transactions': len(block['transactions']),
         'transactions': block['transactions'],
         'proof': block['proof'],
         'prev_hash': block['prev_hash'],
@@ -78,10 +85,6 @@ def full_chain():
 
 
 def main():
-    chain.print_chain()
-    chain.new_transaction("Cian", "Joan", 50.0)
-    chain.print_transactions()
-    chain.print_chain()
     app.run(host='localhost', port=5000)
 
 
