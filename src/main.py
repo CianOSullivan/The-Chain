@@ -1,6 +1,7 @@
 from blockchain import Blockchain
 from flask import Flask, jsonify, request, render_template, Markup
 from uuid import uuid4
+import argparse
 
 app = Flask(__name__)
 chain = Blockchain()
@@ -87,9 +88,17 @@ def full_chain():
     return jsonify(response), 200  # Return the blockchain and a success code
 
 
-def main():
-    app.run(host='localhost', port=5000)  # Start the flask server
+def main(host_name, port_num):
+    app.run(host=host_name, port=port_num)  # Start the flask server
 
 
 if __name__ == "__main__":
-    main()
+    # Initialise default arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--host', default="localhost",
+                        help="the desired hostname of the blockchain server")
+    parser.add_argument('--port', type=int, default=5000,
+                        help="the desired port number of the blockchain server")
+    args = parser.parse_args()
+
+    main(args.host, args.port)
