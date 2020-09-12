@@ -2,15 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Mining</title>
+    <title>Register</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.css') }}">
   </head>
   <body>
     <section class="hero is-dark">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title"> Mine </h1>
-          <h2 class="subtitle"> Mine a block. </h2>
+          <h1 class="title"> Register </h1>
+          <h2 class="subtitle"> Register a new node. </h2>
         </div>
       </div>
       <div class="hero-foot">
@@ -18,8 +18,8 @@
               <div class="container">
                   <ul>
                       <li><a href='/'>Home</a></li>
-                      <li><a href='/transaction'>Transaction</a></li>
-                      <li><a href='/mine' class="is-active">Mine</a></li>
+                      <li><a href='/transaction' class="is-active">Transaction</a></li>
+                      <li><a href='/mine'>Mine</a></li>
                       <li><a href='/register'>Register a Node</a></li>
                   </ul>
               </div>
@@ -28,9 +28,14 @@
     </section>
     <div class="container">
       <br>
-      <p class="subtitle"> Press the mine button below to mine a new block. This will add the current transactions to a new block along with a transaction for the mining operation which will include the node ID.</p><br>
-      <p class="subtitle"> Block mined: <pre>{{response}}</pre> </p> <br>
-      <button onclick="location.href='/mine'" type="button" class="button is-rounded is-link"> Mine </button>
+      <p class="subtitle"> Register a new node on the blockchain.</p>
+      <form method="POST" class="form">
+        <label class="label">Address:</label>
+        <input name="node" class="input" placeholder="Node address"><br><br>
+        <input type="submit" value="Register Node" class="button is-rounded is-link">
+      </form>
+      <br>
+      {{registration}}
     </div>
   </body>
 </html>

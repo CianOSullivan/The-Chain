@@ -3,14 +3,15 @@ from flask import Flask, jsonify, request, render_template, Markup
 from uuid import uuid4
 import argparse
 
+NODE_ID = str(uuid4()).replace('-', '')  # The universally unique id of this node
 app = Flask(__name__)
 chain = Blockchain()
-NODE_ID = str(uuid4()).replace('-', '')  # The universally unique id of this node
 
 
 @app.route('/')
 def index_page():
     """ Display the index page for the flask server """
+    chain.reg_node("http://localhost:5000")
     return render_template("index.html")
 
 
@@ -18,6 +19,30 @@ def index_page():
 def transaction_page():
     """ Return the transaction form """
     return render_template("transaction.html")
+
+
+@app.route('/register')
+def registration_page():
+    """ Return the transaction form """
+    return render_template("register.html")
+
+
+@app.route('/register', methods=['POST'])
+def new_node_form():
+    """ Add transaction to the chain if it is valid """
+    node_name = request.form['node']
+
+    # If node_name doesnt start with http:// then it is not valid and must be refused
+
+
+    if (node_name):
+        registration = Markup('<p class="subtitle has-text-success">Node registered. \n </p>')
+        chain.reg_node(node_name)
+    else:
+        # Send error message on failed transaction
+        registration = Markup('<p class="subtitle has-text-danger">Node registration failed.</p>')
+
+    return render_template("register.html", registration=registration)
 
 
 @app.route('/transaction', methods=['POST'])
@@ -88,8 +113,44 @@ def full_chain():
     return jsonify(response), 200  # Return the blockchain and a success code
 
 
+@app.route('/nodes/register', methods=['POST'])
+def register_nodes():
+    values = request.get_json()
+
+    nodes = values.get('nodes')
+    if nodes is None:
+        return "Error: Please supply a valid list of nodes", 400
+
+    for node in nodes:
+        chain.register_node(node)
+
+    response = {
+        'message': 'New nodes have been added',
+        'total_nodes': list(chain.nodes),
+    }
+    return jsonify(response), 201
+
+
+@app.route('/nodes/resolve', methods=['GET'])
+def consensus():
+    replaced = chain.resolve_conflicts()
+
+    if replaced:
+        response = {
+            'message': 'Our chain was replaced',
+            'new_chain': chain.chain
+        }
+    else:
+        response = {
+            'message': 'Our chain is authoritative',
+            'chain': chain.chain
+        }
+
+    return jsonify(response), 200
+
+
 def main(host_name, port_num):
-    app.run(host=host_name, port=port_num)  # Start the flask server
+    app.run(threaded=True, host=host_name, port=port_num)  # Start the flask server
 
 
 if __name__ == "__main__":

@@ -1,7 +1,8 @@
 from time import time
 import hashlib
 import json
-
+from urllib.parse import urlparse
+import requests
 
 class Blockchain:
     def __init__(self):
@@ -9,6 +10,7 @@ class Blockchain:
         self.chain = []
         self.transactions = []
         self.new_block(100, 1)  # Create the genesis block
+        self.nodes = set()      # Nodes should be unique
 
     def new_block(self, proof, prev_hash=None):
         """ Create a new block """
@@ -74,3 +76,47 @@ class Blockchain:
             proof += 1
 
         return proof
+
+    def reg_node(self, address):
+        parsed_url = urlparse(address)
+        self.nodes.add(parsed_url.netloc)
+        print(self.nodes)
+
+    def validate_chain(self):
+        last_block = self.chain[0]
+        index = 1
+
+        while index < len(self.chain):
+            block = self.chain[index]
+            print(f'{last_block}')
+            print(f'{block}')
+            print("\n-----------\n")
+            if block['previous_hash'] != self.hash(last_block):
+                return False
+            # also check if last block proof eqaills current block proof
+            last_block = block
+            index += 1
+
+        return True
+
+    def resolve_conflicts(self):
+        neighbours = self.nodes
+        new_chain = None
+        max_length = len(self.chain)
+        for node in neighbours:
+            response = requests.get(f'http://{node}/chain')
+            if response.status_code == 200:
+                length = response.json()['length']
+                chain = response.json()['chain']
+
+                # Check if the length is longer and the chain is valid
+                if length > max_length and self.valid_chain(chain):
+                    max_length = length
+                    new_chain = chain
+
+        # Replace our chain if we discovered a new, valid chain longer than ours
+        if new_chain:
+            self.chain = new_chain
+            return True
+
+        return False
