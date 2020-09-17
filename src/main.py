@@ -11,7 +11,6 @@ chain = Blockchain()
 @app.route('/')
 def index_page():
     """ Display the index page for the flask server """
-    chain.reg_node("http://localhost:5000")
     return render_template("index.html")
 
 
@@ -82,6 +81,10 @@ def mine():
         'prev_hash': block['prev_hash'],                          # The hash value of prev block
     }
 
+    print("Running consensus")
+    consensus()
+    print("Finished Consensus")
+
     return render_template("mine.html", response=response)
 
 
@@ -150,6 +153,7 @@ def consensus():
 
 
 def main(host_name, port_num):
+    chain.reg_node("http://" + host_name + ":" + str(port_num))
     app.run(threaded=True, host=host_name, port=port_num)  # Start the flask server
 
 

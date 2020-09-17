@@ -4,6 +4,7 @@ import json
 from urllib.parse import urlparse
 import requests
 
+
 class Blockchain:
     def __init__(self):
         """ Make a new blockchain and create genesis block """
@@ -82,24 +83,31 @@ class Blockchain:
         self.nodes.add(parsed_url.netloc)
         print(self.nodes)
 
-    def validate_chain(self):
-        last_block = self.chain[0]
+    def validate_chain(self, new_chain):
+        last_block = new_chain[0]
         index = 1
 
-        while index < len(self.chain):
-            block = self.chain[index]
-            print(f'{last_block}')
-            print(f'{block}')
+        while index < len(new_chain):
+            block = new_chain[index]
+            #print(f'{last_block}')
+            #print(f'{block}')
+            print("Prev hash")
+            print(block['prev_hash'])
+            print("New hash")
+            print(self.hash_block(last_block))
             print("\n-----------\n")
-            if block['previous_hash'] != self.hash(last_block):
+            if block['prev_hash'] != self.hash_block(last_block):
+                print("Hash not equal")
                 return False
-            # also check if last block proof eqaills current block proof
+            # also check if last block proof equals current block proof
             last_block = block
             index += 1
 
+        print("Chain valid")
         return True
 
     def resolve_conflicts(self):
+        print("Resolving conflicts")
         neighbours = self.nodes
         new_chain = None
         max_length = len(self.chain)
@@ -110,7 +118,7 @@ class Blockchain:
                 chain = response.json()['chain']
 
                 # Check if the length is longer and the chain is valid
-                if length > max_length and self.valid_chain(chain):
+                if length > max_length and self.validate_chain(chain):
                     max_length = length
                     new_chain = chain
 
