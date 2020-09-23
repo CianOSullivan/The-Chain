@@ -1,3 +1,7 @@
+<div align="center">
+	<img width="256" src="assets/logo.png" alt="The Chain logo">
+</div>
+
 # The-Chain
 Blockchain implementation written in Python.
 
