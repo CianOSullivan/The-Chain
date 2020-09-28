@@ -67,6 +67,9 @@ def transaction_form():
 @app.route('/mine', methods=['GET'])
 def mine():
     """ Create a new block """
+    print("Running consensus")
+    consensus()
+    print("Finished Consensus")
     last_block = chain.get_last()
     last_proof = last_block['proof']  # The PoW of the last block
     proof = chain.PoW(last_proof)
@@ -80,10 +83,6 @@ def mine():
         'proof': block['proof'],                                  # The proof of work
         'prev_hash': block['prev_hash'],                          # The hash value of prev block
     }
-
-    print("Running consensus")
-    consensus()
-    print("Finished Consensus")
 
     return render_template("mine.html", response=response)
 

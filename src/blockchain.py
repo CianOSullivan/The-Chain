@@ -15,12 +15,18 @@ class Blockchain:
 
     def new_block(self, proof, prev_hash=None):
         """ Create a new block """
+        if len(self.chain) == 1:
+            prev_hash = 1
+
+        if prev_hash != 1:
+            self.hash_block(self.get_last())
+
         current_block = {
             'index': len(self.chain) + 1,       # The index of the current block in the chain
             'timestamp': time(),                # Stored in unix time
             'transactions': self.transactions,  # The entire list of previous transactions
             'proof': proof,                     # The proof of work
-            'prev_hash': prev_hash or self.hash_block(self.get_last())  # Hash of previous block
+            'prev_hash': prev_hash  # Hash of previous block
         }
 
         self.chain.append(current_block)
@@ -91,12 +97,13 @@ class Blockchain:
             block = new_chain[index]
             #print(f'{last_block}')
             #print(f'{block}')
+            cur_hash = self.hash_block(last_block)
             print("Prev hash")
             print(block['prev_hash'])
             print("New hash")
-            print(self.hash_block(last_block))
+            print(cur_hash)
             print("\n-----------\n")
-            if block['prev_hash'] != self.hash_block(last_block):
+            if block['prev_hash'] != cur_hash:
                 print("Hash not equal")
                 return False
             # also check if last block proof equals current block proof
@@ -111,6 +118,7 @@ class Blockchain:
         neighbours = self.nodes
         new_chain = None
         max_length = len(self.chain)
+
         for node in neighbours:
             response = requests.get(f'http://{node}/chain')
             if response.status_code == 200:
@@ -119,6 +127,7 @@ class Blockchain:
 
                 # Check if the length is longer and the chain is valid
                 if length > max_length and self.validate_chain(chain):
+                    print("Taking new chain")
                     max_length = length
                     new_chain = chain
 
