@@ -28,3 +28,12 @@ optional arguments:
   --port PORT  the desired port number of the blockchain server
 ```
 
+# Screenshots
+
+![Home](assets/home.png)
+
+![Transaction](assets/transaction.png)
+
+![Mine](assets/mine.png)
+
+![Node](assets/node.png)
