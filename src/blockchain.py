@@ -15,16 +15,16 @@ class Blockchain:
 
     def new_block(self, proof, prev_hash=None):
         """ Create a new block """
-        if len(self.chain) == 1:
+        if len(self.chain) == 0:
             prev_hash = 1
 
         if prev_hash != 1:
-            self.hash_block(self.get_last())
+            prev_hash = self.hash_block(self.get_last())
 
         current_block = {
             'index': len(self.chain) + 1,       # The index of the current block in the chain
             'timestamp': time(),                # Stored in unix time
-            'transactions': self.transactions,  # The entire list of previous transactions
+            'transactions': self.transactions[:],  # The entire list of previous transactions
             'proof': proof,                     # The proof of work
             'prev_hash': prev_hash  # Hash of previous block
         }

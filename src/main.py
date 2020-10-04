@@ -32,8 +32,6 @@ def new_node_form():
     node_name = request.form['node']
 
     # If node_name doesnt start with http:// then it is not valid and must be refused
-
-
     if (node_name):
         registration = Markup('<p class="subtitle has-text-success">Node registered. \n </p>')
         chain.reg_node(node_name)
@@ -67,9 +65,9 @@ def transaction_form():
 @app.route('/mine', methods=['GET'])
 def mine():
     """ Create a new block """
-    print("Running consensus")
-    consensus()
-    print("Finished Consensus")
+    #print("Running consensus")
+    #consensus()
+    #print("Finished Consensus")
     last_block = chain.get_last()
     last_proof = last_block['proof']  # The PoW of the last block
     proof = chain.PoW(last_proof)
