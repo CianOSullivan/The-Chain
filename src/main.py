@@ -66,7 +66,7 @@ def transaction_form():
 def mine():
     """ Create a new block """
     #print("Running consensus")
-    #consensus()
+    consensus()
     #print("Finished Consensus")
     last_block = chain.get_last()
     last_proof = last_block['proof']  # The PoW of the last block
@@ -113,6 +113,16 @@ def full_chain():
     return jsonify(response), 200  # Return the blockchain and a success code
 
 
+@app.route('/view-chain', methods=['GET'])
+def view_chain():
+    """ Return the entire blockchain in json format """
+    response = {
+        'chain': chain.chain,        # The actual blockchain
+        'length': len(chain.chain),  # The number of blocks in the chain
+    }
+    return render_template("chain.html", response=response)
+
+
 @app.route('/nodes/register', methods=['POST'])
 def register_nodes():
     values = request.get_json()
@@ -122,7 +132,7 @@ def register_nodes():
         return "Error: Please supply a valid list of nodes", 400
 
     for node in nodes:
-        chain.register_node(node)
+        chain.reg_node(node)
 
     response = {
         'message': 'New nodes have been added',

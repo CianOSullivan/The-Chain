@@ -2,15 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Register</title>
+    <title>Chain</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.css') }}">
   </head>
   <body>
     <section class="hero is-dark">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title"> Register </h1>
-          <h2 class="subtitle"> Register a new node. </h2>
+          <h1 class="title"> Chain </h1>
+          <h2 class="subtitle"> View the entire blockchain. </h2>
         </div>
       </div>
       <div class="hero-foot">
@@ -18,10 +18,10 @@
               <div class="container">
                   <ul>
                       <li><a href='/'>Home</a></li>
-                      <li><a href='/transaction' class="is-active">Transaction</a></li>
+                      <li><a href='/transaction'>Transaction</a></li>
                       <li><a href='/mine'>Mine</a></li>
                       <li><a href='/register'>Register a Node</a></li>
-                      <li><a href='/view-chain'>Chain</a></li> 
+                      <li><a href='/view-chain' class="is-active">Chain</a></li>
                   </ul>
               </div>
           </nav>
@@ -29,14 +29,7 @@
     </section>
     <div class="container">
       <br>
-      <p class="subtitle"> Register a new node on the blockchain.</p>
-      <form method="POST" class="form">
-        <label class="label">Address:</label>
-        <input name="node" class="input" placeholder="Node address"><br><br>
-        <input type="submit" value="Register Node" class="button is-rounded is-link">
-      </form>
-      <br>
-      {{registration}}
+       The chain: <pre>{{response}}</pre> <br>
     </div>
   </body>
 </html>

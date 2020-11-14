@@ -24,11 +24,11 @@ class Blockchain:
         current_block = {
             'index': len(self.chain) + 1,       # The index of the current block in the chain
             'timestamp': time(),                # Stored in unix time
-            'transactions': self.transactions[:],  # The entire list of previous transactions
+            'transactions': self.transactions,  # The entire list of previous transactions
             'proof': proof,                     # The proof of work
             'prev_hash': prev_hash  # Hash of previous block
         }
-
+        self.transactions = []
         self.chain.append(current_block)
         return current_block
 
@@ -95,13 +95,13 @@ class Blockchain:
 
         while index < len(new_chain):
             block = new_chain[index]
-            #print(f'{last_block}')
-            #print(f'{block}')
+            print(f'{last_block}')
+            print(f'{block}')
             cur_hash = self.hash_block(last_block)
-            print("Prev hash")
-            print(block['prev_hash'])
-            print("New hash")
-            print(cur_hash)
+            #print("Prev hash")
+            #print(block['prev_hash'])
+            #print("New hash")
+            #print(cur_hash)
             print("\n-----------\n")
             if block['prev_hash'] != cur_hash:
                 print("Hash not equal")
@@ -120,15 +120,19 @@ class Blockchain:
         max_length = len(self.chain)
 
         for node in neighbours:
+            print("Name",node)
             response = requests.get(f'http://{node}/chain')
             if response.status_code == 200:
+                print("Attempting to size up other node")
                 length = response.json()['length']
                 chain = response.json()['chain']
+                #print(self.validate_chain(chain))
 
                 # Check if the length is longer and the chain is valid
                 if length > max_length and self.validate_chain(chain):
                     print("Taking new chain")
                     max_length = length
+                    print(chain)
                     new_chain = chain
 
         # Replace our chain if we discovered a new, valid chain longer than ours
