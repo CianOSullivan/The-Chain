@@ -72,12 +72,12 @@ class Blockchain:
         hash_found = False
 
         # Continue working until hash ends with 4 0's
-        while (hash_found is False):
+        while hash_found is False:
             current_guess = last_proof * proof
             current_run = str(current_guess).encode()
             run_hash = hashlib.sha256(current_run).hexdigest()
 
-            if (run_hash[:4] == "0000"):
+            if run_hash[:4] == "0000":
                 hash_found = True
 
             proof += 1
@@ -114,19 +114,16 @@ class Blockchain:
         return True
 
     def resolve_conflicts(self):
-        print("Resolving conflicts")
         neighbours = self.nodes
         new_chain = None
         max_length = len(self.chain)
 
         for node in neighbours:
-            print("Name",node)
             response = requests.get(f'http://{node}/chain')
             if response.status_code == 200:
                 print("Attempting to size up other node")
                 length = response.json()['length']
                 chain = response.json()['chain']
-                #print(self.validate_chain(chain))
 
                 # Check if the length is longer and the chain is valid
                 if length > max_length and self.validate_chain(chain):
