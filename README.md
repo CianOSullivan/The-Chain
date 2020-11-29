@@ -5,6 +5,7 @@
 # The-Chain
 Blockchain implementation written in Python.
 
+Live demo available at: [chain.cianosullivan.me](https://chain.cianosullivan.me). Spin up your own instance of The-Chain and add the node on the site to contribute transactions to the network!
 # Running the blockchain
 To run the blockchain:
 
