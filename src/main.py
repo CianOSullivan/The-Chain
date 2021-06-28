@@ -34,8 +34,11 @@ def new_node_form():
 
     # If node_name doesnt start with http:// then it is not valid and must be refused
     if (node_name):
-        registration = Markup('<p class="subtitle has-text-success">Node registered. \n </p>')
-        chain.reg_node(node_name)
+        if (not (node_name.startswith("http://") or node_name.startswith("https://"))):
+            registration = Markup('<p class="subtitle has-text-danger">Node must start with http:// or https://.</p>')
+        else:
+            registration = Markup('<p class="subtitle has-text-success">Node registered. \n </p>')
+            chain.reg_node(node_name)
     else:
         # Send error message on failed transaction
         registration = Markup('<p class="subtitle has-text-danger">Node registration failed.</p>')
@@ -119,7 +122,7 @@ def view_chain():
         'chain': chain.chain,        # The actual blockchain
         'length': len(chain.chain),  # The number of blocks in the chain
     }
-    
+
     return render_template("chain.html", response=json.dumps(response, indent=4)
 )
 
