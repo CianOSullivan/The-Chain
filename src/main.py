@@ -84,7 +84,7 @@ def mine():
         'prev_hash': block['prev_hash'],                          # The hash value of prev block
     }
 
-    return render_template("mine.html", response=response)
+    return render_template("mine.html", response=json.dumps(response, indent=4))
 
 
 @app.route('/transactions/new', methods=['POST'])
