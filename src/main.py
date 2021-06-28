@@ -38,7 +38,8 @@ def new_node_form():
             registration = Markup('<p class="subtitle has-text-danger">Node must start with http:// or https://.</p>')
         else:
             registration = Markup('<p class="subtitle has-text-success">Node registered. \n </p>')
-            chain.reg_node(node_name)
+            if not chain.reg_node(node_name):
+                registration = Markup('<p class="subtitle has-text-danger">Max nodes reached.</p>')
     else:
         # Send error message on failed transaction
         registration = Markup('<p class="subtitle has-text-danger">Node registration failed.</p>')

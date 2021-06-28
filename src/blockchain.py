@@ -6,6 +6,8 @@ import requests
 
 
 class Blockchain:
+    MAX_NODES = 15 # Prevents DoS on my teensy tiny server
+
     def __init__(self):
         """ Make a new blockchain and create genesis block """
         self.chain = []
@@ -85,9 +87,15 @@ class Blockchain:
         return proof
 
     def reg_node(self, address):
-        parsed_url = urlparse(address)
-        self.nodes.add(parsed_url.netloc)
-        print(self.nodes)
+        print(len(self.nodes))
+        if (len(self.nodes) < self.MAX_NODES):
+            parsed_url = urlparse(address)
+            self.nodes.add(parsed_url.netloc)
+            print(self.nodes)
+            return True
+        else:
+            print("Max num of nodes reached")
+            return False
 
     def validate_chain(self, new_chain):
         last_block = new_chain[0]
