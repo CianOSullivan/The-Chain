@@ -2,6 +2,7 @@ from blockchain import Blockchain
 from flask import Flask, jsonify, request, render_template, Markup
 from uuid import uuid4
 import argparse
+import json
 
 NODE_ID = str(uuid4()).replace('-', '')  # The universally unique id of this node
 app = Flask(__name__)
@@ -118,7 +119,9 @@ def view_chain():
         'chain': chain.chain,        # The actual blockchain
         'length': len(chain.chain),  # The number of blocks in the chain
     }
-    return render_template("chain.html", response=response)
+    
+    return render_template("chain.html", response=json.dumps(response, indent=4)
+)
 
 
 @app.route('/nodes/register', methods=['POST'])
